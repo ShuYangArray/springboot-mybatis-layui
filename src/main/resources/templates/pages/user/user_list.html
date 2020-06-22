@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:include="system/header :: commonHeader"></head>
+
+<body>
+	<br>
+	<form action="/userController/users" method="post">
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="width: 110px">用户姓名： </label>
+			<div class="layui-input-inline">
+				<input type="text" name="username" th:value="${username}"
+					class="layui-input" autocomplete="off">
+			</div>
+			<button type="submit" class="layui-btn layui-btn layui-btn-normal">搜索</button>
+			<button type="button" th:onclick="'uploadUser()'"
+				class="layui-btn layui-btn layui-btn-normal">批量上传用户</button>
+			<button type="button" th:onclick="'printPage()'"
+				class="layui-btn layui-btn layui-btn-normal">打印预览</button>
+			<a href="javaScript:void(0)"
+				class="layui-btn layui-btn layui-btn-normal" download="用户数据.xls"
+				onclick="return ExcellentExport.excel(this, 'userTbl', 'Sheet Name Here');">导出用户</a>
+		</div>
+		<hr>
+		<table class="table table-bordered table-hover table-condensed"
+			style="width: 700px;" id="userTbl">
+			<thead class="biaotou">
+				<tr>
+					<th>#</th>
+					<th>患者姓名</th>
+					<th>年龄</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tr th:each="user , userStat : ${userList}">
+				<td><span th:text="${userStat.count}"></span></td>
+				<td><span th:text="${user.username}"></span></td>
+				<td><span th:text="${user.age}"></span></td>
+				<td>
+					<button class="layui-btn layui-btn-xs" type="button"
+						th:onclick="|edit('${user.id}')|">
+						<i class="layui-icon"></i>编辑
+					</button>
+					<button class="layui-btn layui-btn-xs layui-btn-danger "
+						type="button">
+						<i class="layui-icon"></i> 删除
+					</button>
+				</td>
+			</tr>
+		</table>
+	</form>
+
+</body>
+<script th:inline="javascript">
+	function edit(id) {
+		layer.msg('待实现:id=' + id);
+	}
+
+	function printPage() {
+		$('#userTbl').print();
+	}
+
+	function uploadUser() {
+		var openurl = "/userController/user/uploadUserPage";
+		var title = "Excel导入用户";
+		layer.open({
+			type : 2,
+			title : title,
+			shadeClose : true,
+			skin : 'layui-layer-lan',
+			shade : 0.2,
+			area : [ '300px', '150px' ],
+			content : openurl,
+		});
+	}
+</script>
+</html>

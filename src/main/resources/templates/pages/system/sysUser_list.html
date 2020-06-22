@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:include="system/header :: commonHeader">
+</head>
+
+<body>
+	<hr>
+	<form action="/admin/sysUser" method="post">
+		 
+		<table class="table table-bordered table-hover table-condensed"
+			style="width: 700px;" id="userTbl">
+			<thead class="biaotou">
+				<tr>
+					<th>#</th>
+					<th>登录名</th>
+					<th>用户名</th>
+					<th>是否有效</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tr th:each="user , userStat : ${sysUserList}">
+				<td><span th:text="${userStat.count}"></span></td>
+				<td><span th:text="${user.username}"></span></td>
+				<td><span th:text="${user.realName}"></span></td>
+				<td><span th:text="${user.valid == 1 ? '有效' : '无效'}"></span></td>
+				<td>
+					<button class="layui-btn layui-btn-xs" type="button" th:onclick="|edit('${user.id}')|">编辑</button>
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+<script th:inline="javascript">
+	function edit(id) {
+		console.log(id);
+		layer.msg('这里就不编辑了:  id = ' + id);
+	}
+</script>
+</html>
